@@ -11,3 +11,6 @@ export const RECEIVE_TOPICS = 'RECEIVE_TOPICS'; //依据选项请求失败
 
 export const REQUEST_USERINFO = 'REQUEST_USERINFO'; //请求用户信息
 export const RECEIVE_USERINFO = 'RECEIVE_USERINFO'; //接收用户信息
+
+export const REQUEST_COLLECTION = 'REQUEST_COLLECTION'; //请求用户收藏的话题
+export const RECEIVE_COLLECTION = 'RECEIVE_COLLECTION'; //接收用户收藏的话题

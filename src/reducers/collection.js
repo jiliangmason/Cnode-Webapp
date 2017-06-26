@@ -1,26 +1,26 @@
 /**
- * Created by Administrator on 2017/6/23 0023.
+ * Created by Administrator on 2017/6/25 0025.
  */
 import * as ActionType from '../contants/action_contants';
+
 const initialState = {
     isFetching: false,
-    userinfo: {}
+    collect: []
 };
 
-export function UserInfo(state = initialState, action) {
+export function Collect(state = initialState, action) {
     switch (action.type) {
-        case ActionType.REQUEST_USERINFO:
+        case ActionType.REQUEST_COLLECTION:
             return {
                 ...state,
-                isFetching: true,
-                userinfo: {}
+                isFetching: true
             };
 
-        case ActionType.RECEIVE_USERINFO:
+        case ActionType.RECEIVE_COLLECTION:
             return {
                 ...state,
                 isFetching: false,
-                userinfo: action.data
+                collect: action.collect
             };
 
         default:

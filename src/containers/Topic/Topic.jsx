@@ -49,13 +49,13 @@ class Topic extends React.Component {
         const {dispatch} = nextProps;
         const {isFetching, topics} = nextProps.Topic.tabData;
         if (!isFetching && topics.length == 0) {
-            dispatch(ActionList.fetchTopic(nextProps.Topic.selectedTab)); //刚开始selectedTab=all
+            dispatch(ActionList.fetchTopic(nextProps.Topic.selectedTab)); //刚开始selectedTab=good
         }
 
-        if (nextProps.Topic.tabData.topics && nextProps.Topic.tabData.topics.length > 0) {
+        if (topics && topics.length > 0) {
             this.setState({
-                data: nextProps.Topic.tabData.topics,
-                isFetching: nextProps.Topic.tabData.isFetching
+                data: topics,
+                isFetching: isFetching
             })
         }  //重新装载数据
     }

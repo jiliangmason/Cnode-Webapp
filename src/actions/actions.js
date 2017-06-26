@@ -1,5 +1,7 @@
 import * as ActionType from '../contants/action_contants';
 
+/******************************access_token**********************************************/
+
 export function requestAccessToken(accessToken) {
     return (dispatch) => {
         const url = 'https://cnodejs.org/api/v1/accesstoken';  //授权地址
@@ -45,7 +47,8 @@ export function logout() {
         type: ActionType.LOG_OUT
     }
 }
-/******************************access_token**********************************************/
+
+/********************************topic***********************************/
 
 export function topicSelect(tab) {
     return {
@@ -87,7 +90,7 @@ function receiveTopic(tab, data, page, limit) {
     }
 }
 
-/********************************topic***********************************/
+/********************************userinfo***********************************/
 
 export function fetchUserInfo(loginname) {
     return (dispatch, getState)=>{
@@ -127,4 +130,38 @@ export function receiveUserInfo(loginname, data) {
     }
 }
 
-/********************************userinfo***********************************/
+/********************************collection***********************************/
+
+export function fetchUserCollection(loginname) {
+    return (dispatch, getState)=>{
+        let state = getState();
+        const fetchOptions = {
+            method: 'GET'
+        };
+
+        dispatch(requestUserCollection(loginname));
+        if (state.Collect.isFetching) return;
+        fetch(`https://cnodejs.org/api/v1/topic_collect/${loginname}`, fetchOptions)
+             .then(res=>res.json())
+             .then(json=>{
+                 console.log('collect-data', json);
+                 dispatch(receiveUserCollection(loginname, json.data));
+             })
+    }
+}
+
+export function requestUserCollection(loginname) {
+    return {
+        type: ActionType.REQUEST_COLLECTION,
+        loginname
+    }
+}
+
+export function receiveUserCollection(loginname, collect) {
+    return {
+        type: ActionType.RECEIVE_COLLECTION,
+        loginname,
+        collect
+    }
+}
+

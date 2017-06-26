@@ -11,7 +11,8 @@ class Login extends React.Component {
         super(props, context);
         this.state = {
             login: false,
-            userinfo: []
+            userinfo: {},
+            collect: []
         }
     }
 
@@ -48,12 +49,19 @@ class Login extends React.Component {
             let loginname = nextProps.Login.loginname;
             if (loginname) {
                 dispatch(ActionList.fetchUserInfo(loginname));
+                dispatch(ActionList.fetchUserCollection(loginname));
             }
         }
 
         if (this.props.UserInfo != nextProps.UserInfo) {
             this.setState({
-                userinfo: nextProps.UserInfo.collect
+                userinfo: nextProps.UserInfo.userinfo
+            })
+        }
+
+        if (this.props.Collect != nextProps.Collect) {
+            this.setState({
+                collect: nextProps.Collect.collect
             })
         }
 
@@ -64,7 +72,7 @@ class Login extends React.Component {
         return (
             <div className="user-login-form-rc">
                 <NavBar rightContent={this.state.login?[<Icon key={0} onClick={this.logout.bind(this)} type={require('../../images/logout.svg')}/>]:''}>个人中心</NavBar>
-                {this.state.login?<UserInfo userinfo={this.state.userinfo}/>:<UserLogin login={this.login.bind(this)}/>}
+                {this.state.login?<UserInfo userinfo={this.state.userinfo} collect={this.state.collect}/>:<UserLogin login={this.login.bind(this)}/>}
             </div>
         )
     }
@@ -74,7 +82,8 @@ class Login extends React.Component {
 function mapStateToProps(state) {
     return {
         Login: state.Login,
-        UserInfo: state.UserInfo
+        UserInfo: state.UserInfo,
+        Collect: state.Collect
     }
 }
 

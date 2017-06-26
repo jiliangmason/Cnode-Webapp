@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, WhiteSpace, Tabs, List, Flex} from 'antd-mobile';
+import {Card, WhiteSpace, Tabs, List, Flex, ActivityIndicator} from 'antd-mobile';
 import GetTime from '../../../utils/GetTime';
 import './style.less';
 
@@ -19,12 +19,13 @@ export default class UserInfo extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-       // console.log(nextProps.userinfo.recent_topics);
+        // console.log(nextProps.userinfo.recent_topics);
     }
 
     render() {
-        let {userinfo} = this.props;
-        return (
+        let {userinfo, collect} = this.props; //userinfo可能为空对象, collect可能为空数组
+
+        return (JSON.stringify(userinfo) != '{}' && collect.length > 0) ? (
             <div>
                 <Card>
                     <Card.Header title={userinfo.githubUsername} thumb={userinfo.avatar_url}
@@ -42,23 +43,44 @@ export default class UserInfo extends React.Component {
                     <TabPane key="1" tab="发布的话题">
                         <div style={{display: 'flex', height: '7.4rem', backgroundColor: '#fff'}}>
                             {
-                                (userinfo.recent_topics && userinfo.recent_topics.length > 0) ? userinfo.recent_topics.map((item, index)=> {
+                                (userinfo.recent_topics.length > 0) ? userinfo.recent_topics.map((item, index)=> {
                                     return (<List key={index} className="topic-list">
-                                                <Item extra={GetTime.calculateTime(new Date(), item.last_reply_at)} multipleLine>{item.title}</Item>
-                                            </List>)
+                                        <Item extra={GetTime.calculateTime(new Date(), item.last_reply_at)}
+                                              multipleLine>{item.title}</Item>
+                                    </List>)
                                 }) : <div></div>
                             }
                         </div>
                     </TabPane>
-                    <TabPane key="2" tab="参与的话题">
-                        <div style={{display: 'flex', height: '7.4rem', backgroundColor: '#fff'}}></div>
+                    <TabPane key="2" tab="回复的话题">
+                        <div style={{display: 'flex', height: '7.4rem', backgroundColor: '#fff'}}>
+                            {
+                                (userinfo.recent_replies.length > 0) ? userinfo.recent_replies.map((item, index)=> {
+                                    return (<List key={index} className="topic-list">
+                                        <Item extra={GetTime.calculateTime(new Date(), item.last_reply_at)}
+                                              multipleLine>{item.title}</Item>
+                                    </List>)
+                                }) : <div></div>
+                            }
+                        </div>
                     </TabPane>
                     <TabPane key="3" tab="收藏的话题">
-                        <div style={{display: 'flex', height: '7.4rem', backgroundColor: '#fff'}}></div>
+                        <div style={{display: 'flex', height: '7.4rem', backgroundColor: '#fff'}}>
+                            {
+                                collect.map((item, index)=>{
+                                    return (<List key={index}>
+                                        <Item extra={GetTime.calculateTime(new Date(), item.last_reply_at)}
+                                              multipleLine>{item.title}</Item>
+                                    </List>)
+                                })
+                            }
+                        </div>
                     </TabPane>
                 </Tabs>
             </div>
-        )
-    }
+        ) : (<Flex justify="center" style={{marginTop: '0.3rem'}}>
+            <ActivityIndicator size="lg"/>
+        </Flex>)
 
+    }
 }

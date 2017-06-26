@@ -25,7 +25,7 @@ class Home extends React.Component {
             case '首页':
                 return <Topic />;
             case '发布':
-                return <PublishTopic />;
+                return <PublishTopic loginFn={this.selectHandler.bind(this)}/>;
             case '消息':
                 return <Message />;
             case '我的':
