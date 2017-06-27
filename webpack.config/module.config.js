@@ -14,7 +14,7 @@ let EntryConfig = {
 let PluginsConfig = [
 	new HtmlWebpackPlugin({
 		title: 'Redux-cnode',
-		template: path.join(ROOT_PATH, '/src/blank.html'),
+		template: path.join(ROOT_PATH, '/src/index.html'),
 		filename: 'index.html',
 		//chunks这个参数告诉插件要引用entry里面的哪几个入口
 		chunks: ['index', 'lib'],

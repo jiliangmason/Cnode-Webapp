@@ -5,11 +5,13 @@ import {Login} from './login';
 import Topic from './topic';
 import {UserInfo} from './userinfo';
 import {Collect} from './collection';
+import {Publish} from './publish';
 import {combineReducers} from 'redux';
 
 export const rootReducer = combineReducers({
     Login,
     Topic,
     UserInfo,
-    Collect
+    Collect,
+    Publish
 });

@@ -14,8 +14,6 @@ const initialState = {
 export default function Topic(state=initialState, action) {
     switch (action.type) {
         case ActionType.SELECT_TAB:
-            /*state.tabData.topics = [];
-            state.selectedTab = action.tab;*/
             return {
                 ...state,
                 selectedTab: action.tab,
@@ -26,7 +24,6 @@ export default function Topic(state=initialState, action) {
             };
 
         case ActionType.REQUEST_TOPICS:  //开始请求
-            //state.tabData.isFetching = true;
             return {
                 ...state,
                 tabData: {
@@ -35,10 +32,6 @@ export default function Topic(state=initialState, action) {
             };
 
         case ActionType.RECEIVE_TOPICS: //接受响应
-            /*state.tabData.isFetching = false;
-            state.tabData.topics = action.data;
-            state.tabData.page = action.page;
-            state.tabData.limit = action.limit;*/
             return {
                 ...state,
                 tabData: {

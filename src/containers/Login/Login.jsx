@@ -35,7 +35,8 @@ class Login extends React.Component {
     login(accesstoken) {
         const {dispatch} = this.props;
         //测试token：'525383f1-0945-4584-a2cb-941209de44d9'
-        dispatch(ActionList.requestAccessToken(accesstoken));
+        const accesstoken_test = '525383f1-0945-4584-a2cb-941209de44d9';
+        dispatch(ActionList.requestAccessToken(accesstoken_test));
     }
 
     componentWillReceiveProps(nextProps) {

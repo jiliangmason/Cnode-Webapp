@@ -24,10 +24,8 @@ export default class TopicList extends React.Component {
         //let menuHeight = menuHeader.scrollTop; //这个属性可以真实反映滚动条的距离
 
         if (menuHeader.scrollTop + menuHeader.offsetHeight > menu.offsetHeight) {
-            if (!isFetching) {
-                //console.log('loading...');
+                //上拉加载数据
                 loadingMore();
-            }
         }
 
     }

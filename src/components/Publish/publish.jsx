@@ -41,10 +41,12 @@ class Publish extends React.Component {
         ev.preventDefault();
 
         const {getFieldProps} = this.props.form;
+        const {publishFn, login, userinfoFn} = this.props;
+
         let title = getFieldProps('title').value;
         let content = getFieldProps('content').value;
         let select = getFieldProps('select').value;
-        console.log(title, content, select);
+        //console.log(title, content, select);
 
         if (!select) {
             this.setState({
@@ -70,7 +72,16 @@ class Publish extends React.Component {
             return;
         }
 
-        //发帖子
+        //1.请求发帖子
+        //2.重新获取userinfo的信息, 保证切入到'我的'页面可以看到新的发帖信息
+        if (login.accesstoken) {
+            publishFn(login.accesstoken, title, select[0], content);
+        }
+
+        if (login.loginname) {
+            //console.log('refetch', login.loginname);
+            userinfoFn(login.loginname);
+        }
 
     }
 
@@ -83,6 +94,7 @@ class Publish extends React.Component {
 
     render() {
         let {getFieldProps} = this.props.form;
+        let {err} = this.props;
         return (
             <div>
                 <Picker data={source} cols={1} {...getFieldProps('select')} className="forss">
@@ -94,6 +106,7 @@ class Publish extends React.Component {
                     <TextareaItem   {...getFieldProps('content')} title="内容" placeholder="内容字数10字以上" autoHeight/>
                     <WhiteSpace size="lg"/>
                     <WingBlank>
+                        {/*<div style={{visibility: err.hasOwnProperty('error_msg')?'visible':'hidden', padding:'0.22rem',color:'red',textAlign:'center',height:'0.3rem'}}>{err.error_msg}</div>*/}
                         <Button onClick={this.pubHandler.bind(this)} className="user-publish-button">发布</Button>
                     </WingBlank>
                 </List>
@@ -107,7 +120,6 @@ class Publish extends React.Component {
                         ? 'modalTitle' : this.state.modalContent ? 'modalContent' : '')}
                     footer={[{
                         text: '确定', onPress: () => {
-                            console.log('ok');
                             this.onClose.call(this, this.state.modalSelect
                                 ? 'modalSelect' : this.state.modalTitle
                                 ? 'modalTitle' : this.state.modalContent ? 'modalContent' : '');

@@ -102,10 +102,6 @@ export function fetchUserInfo(loginname) {
         dispatch(requestUserInfo(loginname));
         //console.log('userinfo的state', state);
 
-        if (state.UserInfo.isFetching) {
-            return;
-        }
-
         fetch(`https://cnodejs.org/api/v1/user/${loginname}`, fetchOptions)
             .then(res=>res.json())
             .then(json=>{
@@ -140,7 +136,6 @@ export function fetchUserCollection(loginname) {
         };
 
         dispatch(requestUserCollection(loginname));
-        if (state.Collect.isFetching) return;
         fetch(`https://cnodejs.org/api/v1/topic_collect/${loginname}`, fetchOptions)
              .then(res=>res.json())
              .then(json=>{
@@ -162,6 +157,48 @@ export function receiveUserCollection(loginname, collect) {
         type: ActionType.RECEIVE_COLLECTION,
         loginname,
         collect
+    }
+}
+
+/********************************publish***********************************/
+
+export function postUserPublish(accesstoken, title, tab, content) {
+    return (dispatch)=>{
+        let url = 'https://cnodejs.org/api/v1/topics';
+        let postPublishOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `accesstoken=${accesstoken}&title=${title}&tab=${tab}&content=${content}`
+        };
+        fetch(url, postPublishOptions)
+            .then(res=>res.json())
+            .then(json=>{
+                console.log('publish-data:', json);
+                dispatch(successPublish(json.success, json.topic_id));
+            })
+            .catch(err=>{
+                console.log('publish-fail:', err.message);
+                dispatch(failPublish(err.success, err.error_msg));
+            })
+        
+    }
+}
+
+export function successPublish(success, topicId) {
+    return {
+        type: ActionType.SUCCESS_PUBLISH,
+        success,
+        topicId
+    }
+}
+
+export function failPublish(success, error_msg) {
+    return {
+        type: ActionType.FAIL_PUBLISH,
+        success,
+        error_msg
     }
 }
 

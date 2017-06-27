@@ -42,38 +42,39 @@ export default class UserInfo extends React.Component {
                 <Tabs defaultActiveKey="1" onChange={this.callback.bind(this)}>
                     <TabPane key="1" tab="发布的话题">
                         <div style={{display: 'flex', height: '7.4rem', backgroundColor: '#fff'}}>
-                            {
-                                (userinfo.recent_topics.length > 0) ? userinfo.recent_topics.map((item, index)=> {
-                                    return (<List key={index} className="topic-list">
-                                        <Item extra={GetTime.calculateTime(new Date(), item.last_reply_at)}
+                            <List className="topic-list">
+                                {(userinfo.recent_topics.length > 0) ? userinfo.recent_topics.map((item, index)=> {
+                                    return (
+                                        <Item key={index} extra={GetTime.calculateTime(new Date(), item.last_reply_at)}
                                               multipleLine>{item.title}</Item>
-                                    </List>)
-                                }) : <div></div>
-                            }
+                                    )
+                                }) : <div></div>}
+                            </List>
                         </div>
                     </TabPane>
                     <TabPane key="2" tab="回复的话题">
                         <div style={{display: 'flex', height: '7.4rem', backgroundColor: '#fff'}}>
-                            {
-                                (userinfo.recent_replies.length > 0) ? userinfo.recent_replies.map((item, index)=> {
-                                    return (<List key={index} className="topic-list">
-                                        <Item extra={GetTime.calculateTime(new Date(), item.last_reply_at)}
+                            <List key={index} className="topic-list">
+                                {(userinfo.recent_replies.length > 0) ? userinfo.recent_replies.map((item, index)=> {
+                                    return (
+                                        <Item key={index} extra={GetTime.calculateTime(new Date(), item.last_reply_at)}
                                               multipleLine>{item.title}</Item>
-                                    </List>)
-                                }) : <div></div>
-                            }
+                                    )
+                                }) : <div></div>}
+                            </List>
+
                         </div>
                     </TabPane>
                     <TabPane key="3" tab="收藏的话题">
                         <div style={{display: 'flex', height: '7.4rem', backgroundColor: '#fff'}}>
-                            {
-                                collect.map((item, index)=>{
-                                    return (<List key={index}>
-                                        <Item extra={GetTime.calculateTime(new Date(), item.last_reply_at)}
+                            <List key={index}>
+                                {collect.map((item, index)=>{
+                                    return (
+                                        <Item key={index} extra={GetTime.calculateTime(new Date(), item.last_reply_at)}
                                               multipleLine>{item.title}</Item>
-                                    </List>)
-                                })
-                            }
+                                   )
+                                })}
+                            </List>
                         </div>
                     </TabPane>
                 </Tabs>
