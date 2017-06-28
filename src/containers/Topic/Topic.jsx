@@ -80,12 +80,12 @@ class Topic extends React.Component {
 
     render() {
         const outerHeight = {
-            height: document.documentElement.clientHeight - 99
+            height: document.documentElement.clientHeight - 99  //待修改
         };
-
+        const {Login, UserInfo, loginFn, Collect} = this.props;
         return (
             <div style={outerHeight}>
-                <TopicHeader />
+                <TopicHeader Login={Login} UserInfo={UserInfo} Collect={Collect} loginFn={loginFn}/>
                 <div>
                     <Tabs defaultActiveKey="1" onChange={this.callback.bind(this)} onTabClick={this.tabClickHandler.bind(this)}>
                         {tab.map(item=> {
@@ -107,7 +107,10 @@ class Topic extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        Topic: state.Topic
+        Topic: state.Topic,
+        Login: state.Login,
+        UserInfo: state.UserInfo,
+        Collect: state.Collect
     }
 }
 

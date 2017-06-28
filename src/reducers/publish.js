@@ -17,7 +17,6 @@ export function Publish(state = initialState, action) {
         case ActionType.FAIL_PUBLISH:
             return {
                 ...state,
-                success: action.success,
                 failmessage: action.error_msg
             };
 

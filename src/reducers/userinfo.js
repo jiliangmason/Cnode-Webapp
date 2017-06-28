@@ -23,6 +23,12 @@ export function UserInfo(state = initialState, action) {
                 userinfo: action.data
             };
 
+        case ActionType.FAIL_USERINFO:
+            return {
+                ...state,
+                failmessage: action.error_msg
+            };
+
         default:
             return state;
     }

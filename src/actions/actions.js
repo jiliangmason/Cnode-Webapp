@@ -106,7 +106,12 @@ export function fetchUserInfo(loginname) {
             .then(res=>res.json())
             .then(json=>{
                 console.log('user-info:', json);
-                dispatch(receiveUserInfo(loginname, json.data))
+                if (json.success) {
+                    dispatch(receiveUserInfo(loginname, json.data))
+                }
+                else {
+                    dispatch(failUserInfo(json.error_msg))
+                }
             })
     }
 }
@@ -123,6 +128,13 @@ export function receiveUserInfo(loginname, data) {
         type: ActionType.RECEIVE_USERINFO,
         loginname,
         data
+    }
+}
+
+export function failUserInfo(error_msg) {
+    return {
+        type: ActionType.FAIL_USERINFO,
+        error_msg
     }
 }
 
@@ -176,11 +188,12 @@ export function postUserPublish(accesstoken, title, tab, content) {
             .then(res=>res.json())
             .then(json=>{
                 console.log('publish-data:', json);
-                dispatch(successPublish(json.success, json.topic_id));
-            })
-            .catch(err=>{
-                console.log('publish-fail:', err.message);
-                dispatch(failPublish(err.success, err.error_msg));
+                if (json.success) {
+                    dispatch(successPublish(json.success, json.topic_id));
+                }
+                else {
+                    dispatch(failPublish(json.error_msg));
+                }
             })
         
     }
@@ -194,10 +207,9 @@ export function successPublish(success, topicId) {
     }
 }
 
-export function failPublish(success, error_msg) {
+export function failPublish(error_msg) {
     return {
         type: ActionType.FAIL_PUBLISH,
-        success,
         error_msg
     }
 }

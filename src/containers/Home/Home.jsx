@@ -23,7 +23,7 @@ class Home extends React.Component {
 
         switch (text) {
             case '首页':
-                return <Topic />;
+                return <Topic loginFn={this.selectHandler.bind(this)}/>;
             case '发布':
                 return <PublishTopic loginFn={this.selectHandler.bind(this)}/>;
             case '消息':

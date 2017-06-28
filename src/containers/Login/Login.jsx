@@ -1,7 +1,7 @@
 import React from 'react';
 import UserLogin from '../../components/Login/UnLog/user_login';
 import UserInfo from '../../components/Login/Log/user_info';
-import {NavBar, Icon} from 'antd-mobile';
+import {NavBar, Icon, Modal} from 'antd-mobile';
 import {connect} from 'react-redux';
 import * as ActionList from '../../actions/actions';
 import './style.less';
@@ -11,6 +11,7 @@ class Login extends React.Component {
         super(props, context);
         this.state = {
             login: false,
+            modal: false,
             userinfo: {},
             collect: []
         }
@@ -37,6 +38,18 @@ class Login extends React.Component {
         //测试token：'525383f1-0945-4584-a2cb-941209de44d9'
         const accesstoken_test = '525383f1-0945-4584-a2cb-941209de44d9';
         dispatch(ActionList.requestAccessToken(accesstoken_test));
+    }
+
+    onClose(key) {
+        this.setState({
+            [key]: false
+        })
+    }
+
+    showModal(key) {
+        this.setState({
+            [key]: true
+        })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -72,8 +85,22 @@ class Login extends React.Component {
     render() {
         return (
             <div className="user-login-form-rc">
-                <NavBar rightContent={this.state.login?[<Icon key={0} onClick={this.logout.bind(this)} type={require('../../images/logout.svg')}/>]:''}>个人中心</NavBar>
-                {this.state.login?<UserInfo userinfo={this.state.userinfo} collect={this.state.collect}/>:<UserLogin login={this.login.bind(this)}/>}
+                <NavBar rightContent={this.state.login?[<Icon key={0} onClick={this.showModal.bind(this, 'modal')} type={require('../../images/logout.svg')}/>]:''}>个人中心</NavBar>
+                {this.state.login ? <UserInfo userinfo={this.state.userinfo} collect={this.state.collect}/> : <UserLogin login={this.login.bind(this)}/>}
+                <Modal
+                    title="退出登陆"
+                    transparent
+                    maskClosable={false}
+                    visible={this.state.modal}
+                    onClose={this.onClose.bind(this, 'modal')}
+                    footer={[{text: '确定', onPress: () => {
+                            this.logout();
+                            this.onClose.call(this, 'modal')
+                        }
+                    }, {text: '取消', onPress: () => {
+                        this.onClose.call(this, 'modal')
+                    }}]}
+                >确定退出登陆?</Modal>
             </div>
         )
     }

@@ -26,12 +26,12 @@ class PublishTopic extends React.Component {
     }
 
     render() {
-        const {Login, PublishTopic} = this.props;
+        let {Login, PublishTopic} = this.props;
         return (
             <div className="user-publish-topic">
                 <NavBar>发布</NavBar>
                 {
-                    Login.success ? <Publish publishFn={this.publishTopic.bind(this)} userinfoFn={this.reFetchUserInfo.bind(this)} login={Login} error={PublishTopic}/>
+                    Login.success ? <Publish publishFn={this.publishTopic.bind(this)} userinfoFn={this.reFetchUserInfo.bind(this)} login={Login} PublishTopic={PublishTopic} successPublish={this.loginHandler.bind(this)}/>
                         :(<Flex justify="center">
                             <div style={{marginTop: '1rem'}}>
                                 <p style={{color: '#000', fontSize: '0.35rem'}}>请先<span onClick={this.loginHandler.bind(this)} style={{color: '#108ee9'}}>登陆</span>之后再进行操作</p>

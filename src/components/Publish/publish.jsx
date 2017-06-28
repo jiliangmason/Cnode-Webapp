@@ -1,6 +1,6 @@
 import React from 'react';
 import {createForm} from 'rc-form';
-import {Picker, List, TextareaItem, Button, Modal, WingBlank, WhiteSpace} from 'antd-mobile';
+import {Picker, List, TextareaItem, Button, Modal, WingBlank, WhiteSpace, Toast} from 'antd-mobile';
 import './style.less';
 
 const source = [
@@ -21,6 +21,7 @@ const source = [
         value: 'job'
     }
 ];
+const alert = Modal.alert;
 
 class Publish extends React.Component {
     constructor(props, context) {
@@ -32,7 +33,6 @@ class Publish extends React.Component {
         }
     }
 
-
     /*
      * 发布按钮点击
      * */
@@ -41,7 +41,7 @@ class Publish extends React.Component {
         ev.preventDefault();
 
         const {getFieldProps} = this.props.form;
-        const {publishFn, login, userinfoFn} = this.props;
+        const {publishFn, login, userinfoFn, PublishTopic, successPublish} = this.props;
 
         let title = getFieldProps('title').value;
         let content = getFieldProps('content').value;
@@ -79,9 +79,30 @@ class Publish extends React.Component {
         }
 
         if (login.loginname) {
-            //console.log('refetch', login.loginname);
             userinfoFn(login.loginname);
         }
+
+        this.showAlert(PublishTopic, successPublish);
+
+    }
+
+    showAlert(PublishTopic, successPublish) {
+        let alertInstance = alert('发布主题', '正在发布中...', []);
+        setTimeout(() => {
+            // 可以调用close方法以在外部close
+            if (PublishTopic.hasOwnProperty('failmessage')) {
+                Toast.info('发布失败,请重试!', 1);
+            }
+            else {
+                Toast.info('发布成功~', 1);
+                successPublish(); //跳转到'我的'页面
+            }
+            alertInstance.close();
+
+        }, 2000);
+    }
+
+    reSetForm() {
 
     }
 
@@ -106,7 +127,6 @@ class Publish extends React.Component {
                     <TextareaItem   {...getFieldProps('content')} title="内容" placeholder="内容字数10字以上" autoHeight/>
                     <WhiteSpace size="lg"/>
                     <WingBlank>
-                        {/*<div style={{visibility: err.hasOwnProperty('error_msg')?'visible':'hidden', padding:'0.22rem',color:'red',textAlign:'center',height:'0.3rem'}}>{err.error_msg}</div>*/}
                         <Button onClick={this.pubHandler.bind(this)} className="user-publish-button">发布</Button>
                     </WingBlank>
                 </List>
