@@ -27,7 +27,7 @@ class Home extends React.Component {
             case '发布':
                 return <PublishTopic loginFn={this.selectHandler.bind(this)}/>;
             case '消息':
-                return <Message />;
+                return <Message loginFn={this.selectHandler.bind(this)}/>;
             case '我的':
                 return <Login />;
             default:
@@ -63,7 +63,7 @@ class Home extends React.Component {
                     {this.fillContent('发布')}
                 </TabBar.Item>
 
-                <TabBar.Item title="消息" key="消息" icon={<Icon type={require('../../images/message.svg')} />} selectedIcon={<Icon type={require('../../images/message-fill.svg')} />}
+                <TabBar.Item title="消息" key="消息" badge={(state.Message.hasnot_read_messages&&state.Login.success)?state.Message.hasnot_read_messages.length:''} icon={<Icon type={require('../../images/message.svg')} />} selectedIcon={<Icon type={require('../../images/message-fill.svg')} />}
                              selected={this.state.selectedTab == 'message'}
                              onPress={this.selectHandler.bind(this, 'message')}>
                     {this.fillContent('消息')}

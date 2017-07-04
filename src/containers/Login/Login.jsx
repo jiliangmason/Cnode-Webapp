@@ -35,7 +35,6 @@ class Login extends React.Component {
 
     login(accesstoken) {
         const {dispatch} = this.props;
-        //测试token：'525383f1-0945-4584-a2cb-941209de44d9'
         const accesstoken_test = '525383f1-0945-4584-a2cb-941209de44d9';
         dispatch(ActionList.requestAccessToken(accesstoken_test));
     }
@@ -61,9 +60,22 @@ class Login extends React.Component {
 
             //如果loginname，id有值就request_userinfo
             let loginname = nextProps.Login.loginname;
+            let accesstoken = nextProps.Login.accesstoken;
+            let loginUserInfo = {};
+            Object.assign(loginUserInfo, {loginname, accesstoken});
+
+            if (JSON.stringify(loginUserInfo) != '{}') {
+                console.log('loginuserinfo:', loginUserInfo);
+                //这里存到localStorage里面
+            }
+
             if (loginname) {
                 dispatch(ActionList.fetchUserInfo(loginname));
                 dispatch(ActionList.fetchUserCollection(loginname));
+
+            }
+            if (accesstoken) {
+                dispatch(ActionList.fetchUserMessage(accesstoken));
             }
         }
 

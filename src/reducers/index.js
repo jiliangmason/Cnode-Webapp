@@ -6,6 +6,8 @@ import Topic from './topic';
 import {UserInfo} from './userinfo';
 import {Collect} from './collection';
 import {Publish} from './publish';
+import Message from './message';
+import {Details} from './details';
 import {combineReducers} from 'redux';
 
 export const rootReducer = combineReducers({
@@ -13,5 +15,7 @@ export const rootReducer = combineReducers({
     Topic,
     UserInfo,
     Collect,
-    Publish
+    Publish,
+    Message,
+    Details
 });

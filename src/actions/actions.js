@@ -214,3 +214,89 @@ export function failPublish(error_msg) {
     }
 }
 
+/********************************message***********************************/
+
+export function fetchUserMessage(accesstoken) {
+    return (dispatch) => {
+        const fetchOptions = {
+            method: 'GET'
+        };
+        dispatch(requestUserMessage());
+        fetch(`https://cnodejs.org/api/v1/messages?accesstoken=${accesstoken}`, fetchOptions)
+            .then(res=>res.json())
+            .then(json=>{
+                console.log('user-message:', json);
+                if (json.success) {
+                    dispatch(receiveUserMessage(json.data.has_read_messages, json.data.hasnot_read_messages))
+                }
+                else {
+                    dispatch(failUserMessage(json.error_msg))
+                }
+            })
+    }
+}
+
+export function requestUserMessage() {
+    return {
+        type: ActionType.REQUEST_MESSAGE
+    }
+}
+
+export function receiveUserMessage(has_read_messages, hasnot_read_messages) {
+    return {
+        type: ActionType.RECEIVE_MESSAGE,
+        has_read_messages,
+        hasnot_read_messages
+    }
+}
+
+export function failUserMessage(error_msg) {
+    return {
+        type: ActionType.ERROR_MESSAGE,
+        error_msg
+    }
+}
+
+/********************************details***********************************/
+export function fetchArticleDetails(id) {
+    return (dispatch, getState)=>{
+        const fetchOptions = {
+            method: 'GET'
+        };
+        dispatch(requestArticleDetails(id));
+        fetch(`https://cnodejs.org/api/v1/topic/${id}`, fetchOptions)
+            .then(res=>res.json())
+            .then(json=>{
+                if (json.success) {
+                    console.log('article-details:', json);
+                    dispatch(receiveArticleDetails(json.data))
+                }
+                else {
+                    dispatch(failArticleDetails(json.error_msg))
+                }
+            })
+    }
+}
+
+export function requestArticleDetails(id) {
+    return {
+        type: ActionType.REQUEST_DETAILS,
+        id
+    }
+}
+
+export function receiveArticleDetails(data) {
+    return {
+        type: ActionType.RECEIVE_DETAILS,
+        data
+    }
+}
+
+export function failArticleDetails(error_msg) {
+    return {
+        type: ActionType.ERROR_DETAILS,
+        error_msg
+    }
+}
+
+
