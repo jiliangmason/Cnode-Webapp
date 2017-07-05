@@ -172,6 +172,47 @@ export function receiveUserCollection(loginname, collect) {
     }
 }
 
+/*
+* 发起请求收藏topic
+* */
+export function postCollectTopic(accesstoken, topicId, isCollect) {
+    return (dispatch)=>{
+        let url = `https://cnodejs.org/api/v1/topic_collect/${isCollect?'de_collect':'collect'}`;
+        let postCollectOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `accesstoken=${accesstoken}&topic_id=${topicId}`
+        };
+        fetch(url, postCollectOptions)
+            .then(res=>res.json())
+            .then(json=>{
+                if (json.success) {
+                    dispatch(successPostCollection(json.success, topicId))
+                }
+                else {
+                    dispatch(failPostCollection(json.error_msg))
+                }
+            })
+    }
+}
+
+export function successPostCollection(success, id) {
+    return {
+        type: ActionType.COLLECT_TOPIC_SUCCESS,
+        success,
+        id
+    }
+}
+
+export function failPostCollection(error_msg) {
+    return {
+        type: ActionType.COLLECT_TOPIC_FAILED,
+        error_msg
+    }
+}
+
 /********************************publish***********************************/
 
 export function postUserPublish(accesstoken, title, tab, content) {
@@ -258,6 +299,7 @@ export function failUserMessage(error_msg) {
 }
 
 /********************************details***********************************/
+
 export function fetchArticleDetails(id) {
     return (dispatch, getState)=>{
         const fetchOptions = {
@@ -295,6 +337,56 @@ export function receiveArticleDetails(data) {
 export function failArticleDetails(error_msg) {
     return {
         type: ActionType.ERROR_DETAILS,
+        error_msg
+    }
+}
+
+/*
+ * 改变某一个主题的收藏状态is_collect
+ * */
+export function updateCollectStatus(details) {
+    return {
+        type: ActionType.UPDATE_DETAILS,
+        details
+    }
+}
+
+/********************************comments***********************************/
+
+export function upComments(accesstoken, replyId) {
+    return (dispatch)=>{
+        let url = `https://cnodejs.org/api/v1/reply/${replyId}/ups`;
+        let postPublishOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `accesstoken=${accesstoken}`
+        };
+        fetch(url, postPublishOptions)
+            .then(res=>res.json())
+            .then(json=>{
+                console.log('upcomments-data:', json);
+                if (json.success) {
+                    dispatch(successUpComments(json.action));
+                }
+                else {
+                    dispatch(failUpComments(json.error_msg));
+                }
+            })
+    }
+}
+
+export function successUpComments(action_type) {
+    return {
+        type: ActionType.SUCCESS_UPCOMMENTS,
+        todo: action_type
+    }
+}
+
+export function failUpComments(error_msg) {
+    return {
+        type: ActionType.ERROR_UPCOMMENTS,
         error_msg
     }
 }

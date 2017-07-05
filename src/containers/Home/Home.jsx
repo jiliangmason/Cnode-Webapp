@@ -29,7 +29,7 @@ class Home extends React.Component {
             case '消息':
                 return <Message loginFn={this.selectHandler.bind(this)}/>;
             case '我的':
-                return <Login />;
+                return <Login loginFn={this.selectHandler.bind(this)}/>;
             default:
                 return '';
         }

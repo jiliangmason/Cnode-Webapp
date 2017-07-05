@@ -20,6 +20,9 @@ export function Details(state = initialState, action) {
                 isFetching: false
             };
 
+        case ActionType.UPDATE_DETAILS:
+            return action.details;
+
         case ActionType.ERROR_DETAILS:
             return {
                 ...state,

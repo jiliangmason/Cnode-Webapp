@@ -1,4 +1,14 @@
+/*
+html body是移动端布局的要求写法
+*/
+html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 body {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
   overflow: auto;

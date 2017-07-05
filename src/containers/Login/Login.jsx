@@ -9,6 +9,9 @@ import './style.less';
 class Login extends React.Component {
     constructor(props, context) {
         super(props, context);
+        /*
+        * login userinfo collect这三个只用于调试，不传入子组件
+        * */
         this.state = {
             login: false,
             modal: false,
@@ -66,16 +69,16 @@ class Login extends React.Component {
 
             if (JSON.stringify(loginUserInfo) != '{}') {
                 console.log('loginuserinfo:', loginUserInfo);
-                //这里存到localStorage里面
-            }
+
+            } //这里存到localStorage里面
 
             if (loginname) {
-                dispatch(ActionList.fetchUserInfo(loginname));
-                dispatch(ActionList.fetchUserCollection(loginname));
+                dispatch(ActionList.fetchUserInfo(loginname));  //获取用户信息
+                dispatch(ActionList.fetchUserCollection(loginname)); //获取用户收藏主题
 
             }
             if (accesstoken) {
-                dispatch(ActionList.fetchUserMessage(accesstoken));
+                dispatch(ActionList.fetchUserMessage(accesstoken));  //获取用户的消息
             }
         }
 
@@ -95,10 +98,11 @@ class Login extends React.Component {
 
 
     render() {
+        const {Collect, Login} = this.props;
         return (
             <div className="user-login-form-rc">
-                <NavBar rightContent={this.state.login?[<Icon key={0} onClick={this.showModal.bind(this, 'modal')} type={require('../../images/logout.svg')}/>]:''}>个人中心</NavBar>
-                {this.state.login ? <UserInfo userinfo={this.state.userinfo} collect={this.state.collect}/> : <UserLogin login={this.login.bind(this)}/>}
+                <NavBar rightContent={Login.success?[<Icon key={0} onClick={this.showModal.bind(this, 'modal')} type={require('../../images/logout.svg')}/>]:''}>个人中心</NavBar>
+                {Login.success ? <UserInfo userinfo={this.props.UserInfo.userinfo} collect={Collect.collect}/> : <UserLogin login={this.login.bind(this)}/>}
                 <Modal
                     title="退出登陆"
                     transparent
