@@ -1,9 +1,11 @@
 import React from 'react';
 import UserLogin from '../../components/Login/UnLog/user_login';
 import UserInfo from '../../components/Login/Log/user_info';
-import {NavBar, Icon, Modal} from 'antd-mobile';
+import {hashHistory} from 'react-router';
+import {NavBar, Icon, Modal, Toast} from 'antd-mobile';
 import {connect} from 'react-redux';
 import * as ActionList from '../../actions/actions';
+import HashMap from '../../utils/HashMapUtils';
 import './style.less';
 
 class Login extends React.Component {
@@ -56,6 +58,7 @@ class Login extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const {dispatch} = this.props;
+
         if (this.props.Login != nextProps.Login) {
             this.setState({
                 login: nextProps.Login.success
@@ -79,6 +82,16 @@ class Login extends React.Component {
             }
             if (accesstoken) {
                 dispatch(ActionList.fetchUserMessage(accesstoken));  //获取用户的消息
+            }
+
+            //如果是由某文章的评论跳转过来的，登陆成功后跳转回去
+            if (HashMap.get('articleId') && nextProps.Login.success) {
+                let id = HashMap.get('articleId');
+                HashMap.remove('articleId');
+                Toast.success('登陆成功,页面跳转中...', 1);
+                setTimeout(()=>{
+                    hashHistory.replace(`/details/${id}`);
+                }, 1500);
             }
         }
 

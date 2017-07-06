@@ -5,12 +5,12 @@ import Topic from '../Topic/Topic';
 import PublishTopic from '../PublishTopic/PublishTopic';
 import Message from '../Message/Message';
 import Login from '../Login/Login';
+import HashMap from '../../utils/HashMapUtils';
 
 class Home extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            //selectedTab: HashMap.containsKey('selectedTab')?HashMap.get('selectedTab'):'index',
             selectedTab: 'index',
             hidden: false
         }
@@ -42,6 +42,17 @@ class Home extends React.Component {
         this.setState({
             selectedTab: tab
         });
+    }
+
+    componentWillMount() {
+        this.gotoLogin();
+    }
+
+    gotoLogin() {
+        if (HashMap.get('gotoLogin')) {
+            this.selectHandler.call(this, 'myinfo');
+            HashMap.remove('gotoLogin')
+        }
     }
 
     render() {

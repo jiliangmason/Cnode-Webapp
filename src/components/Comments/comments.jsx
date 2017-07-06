@@ -1,13 +1,19 @@
 import React from 'react';
 import {Card, WhiteSpace, Icon, Toast, List, Button, Flex, TextareaItem} from 'antd-mobile';
 import GetTime from '../../utils/GetTime';
-import { createForm } from 'rc-form';
+import HashMap from '../../utils/HashMapUtils';
+import {hashHistory} from 'react-router';
+import {createForm} from 'rc-form';
 import './style.less';
 
 class Comments extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.upComments = [];
+        this.state = {
+            showComment: false,
+            reply: ''
+        };
     }
 
     upComment(index, replyId, loginname) {
@@ -35,7 +41,7 @@ class Comments extends React.Component {
      * 该功能暂不添加
      * */
     hasOwnUpComment(replies, id) {
-        replies.forEach((item, index)=>{
+        replies.forEach((item, index)=> {
             if (this.containsId(item, id)) {
                 this.upComments.push(true)
             }
@@ -57,19 +63,46 @@ class Comments extends React.Component {
         const {Login, details, replyCommentsFn} = this.props;
         const Form = this.props.form;
         let content = Form.getFieldValue('user_reply');
-        //console.log('content-pro', content, Login.accesstoken, details.id)
+
         replyCommentsFn(Login.accesstoken, content, details.id);
         Form.setFieldsValue({
             user_reply: ''
         });
     }
 
-    loginHandler() {
+    replyComment(replyId) {
+        const {Login} = this.props;
+        if (!Login.success) {
+            Toast.fail('请先登陆再进行操作!', 1);
+            return
+        }
 
+        this.setState({
+            showComment: !this.state.showComment,
+            reply: replyId
+        })
+    }
+
+    replyOtherHandler(replyId) {
+        const {Login, details, replyCommentsFn} = this.props;
+        const Form = this.props.form;
+        let content = Form.getFieldValue('reply_other');
+
+        replyCommentsFn(Login.accesstoken, content, details.id, replyId);
+        Form.setFieldsValue({
+            reply_other: ''
+        });
+    }
+
+    loginHandler(id) {
+        const {backTopic} = this.props;
+        HashMap.put('gotoLogin', true);
+        HashMap.put('articleId', id);
+        backTopic(); //修复登陆后首页无法加载数据bug
     }
 
     render() {
-        const {details, Login} = this.props;
+        const {details, Login, id} = this.props;
         const {getFieldDecorator} = this.props.form;
         this.findUpComments(details, Login);
         return (
@@ -87,11 +120,28 @@ class Comments extends React.Component {
                                     </Card.Body>
                                     <Card.Footer content={GetTime.calculateTime(new Date(), item.create_at)}
                                                  extra={<div>
-                                                     <Icon onClick={this.upComment.bind(this, index, item.id, item.author.loginname)} type={this.upComments[index]?require('../../images/agree-fill.svg'):require('../../images/agree.svg')}/>
-                                                     <span style={{padding: '0 20px 10px 10px', fontSize: '0.32rem'}}>{item.ups.length}</span>
-                                                     <Icon type={require('../../images/forward.svg')}/>
+                                                     <Icon
+                                                         onClick={this.upComment.bind(this, index, item.id, item.author.loginname)}
+                                                         type={this.upComments[index] ? require('../../images/agree-fill.svg') : require('../../images/agree.svg')}/>
+                                                     <span style={{
+                                                         padding: '0 20px 10px 10px',
+                                                         fontSize: '0.32rem'
+                                                     }}>{item.ups.length}</span>
+                                                     <Icon onClick={this.replyComment.bind(this, item.id)}
+                                                           type={(this.state.showComment && this.state.reply == item.id) ? require('../../images/forward-fill.svg') : require('../../images/forward.svg')}/>
                                                  </div>}/>
                                 </Card>
+                                <div style={{display: (this.state.showComment && this.state.reply == item.id) ? 'block' : 'none'}}>
+                                    <List renderHeader={() => '添加回复'}>
+                                        {(getFieldDecorator('reply_other', {initialValue: `@${item.author.loginname}`}))(<TextareaItem
+                                            rows={5}
+                                            count={200}
+                                            clear
+                                        />)}
+                                        <Button type="primary" className="reply-btn"
+                                                onClick={this.replyOtherHandler.bind(this, item.id)}>回复</Button>
+                                    </List>
+                                </div>
                             </div>
                         )
                     })
@@ -103,15 +153,18 @@ class Comments extends React.Component {
                             count={200}
                             clear
                         />)}
-                        <Button type="primary" className="reply-btn" onClick={this.selfReplyHandler.bind(this)}>回复</Button>
+                        <Button type="primary" className="reply-btn"
+                                onClick={this.selfReplyHandler.bind(this)}>回复</Button>
                     </List>
-                        :<List>
-                            <Flex justify="center">
+                        : <List>
+                        <Flex justify="center">
                             <div style={{margin: '0.5rem 0'}}>
-                                <p style={{color: '#000', fontSize: '0.35rem'}}>请先<span onClick={this.loginHandler.bind(this)} style={{color: '#108ee9'}}>登陆</span>之后再进行操作</p>
+                                <p style={{color: '#000', fontSize: '0.35rem'}}>请先<span
+                                    onClick={this.loginHandler.bind(this, details.id)} style={{color: '#108ee9'}}>登陆</span>之后再进行操作
+                                </p>
                             </div>
-                            </Flex>
-                        </List>
+                        </Flex>
+                    </List>
                 }
             </div>
         )

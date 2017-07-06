@@ -110,7 +110,7 @@ class Details extends React.Component {
     }
 
     render() {
-        const {Details, Login, Collect} = this.props;
+        const {Details, Login, Collect, params} = this.props;
         return (
             <div>
                 <div style={{position: 'fixed', top: 0, width: '100%', zIndex: '999'}}>
@@ -121,7 +121,8 @@ class Details extends React.Component {
                                             initCollect={this.state.initCollect}
                                             collectTopicFn={this.collectTopic.bind(this)}
                                             updateDetailsFn={this.updateDetails.bind(this)}/>
-                    <Comments details={Details.details} Login={Login} upCommentsFn={this.upCommentsFn.bind(this)} replyCommentsFn={this.replyCommentsFn.bind(this)}/></div>)
+                    <Comments id={params.id} details={Details.details} Login={Login} upCommentsFn={this.upCommentsFn.bind(this)}
+                              replyCommentsFn={this.replyCommentsFn.bind(this)} backTopic={this.leftClickHandler.bind(this)}/></div>)
                     :
                     <div className="details-loading-indicator"><ActivityIndicator size="large" /></div>}
             </div>
