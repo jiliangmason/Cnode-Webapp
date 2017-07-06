@@ -9,6 +9,7 @@ import {Publish} from './publish';
 import Message from './message';
 import {Details} from './details';
 import {UpComments} from './upcomment';
+import {Replies} from './replies';
 import {combineReducers} from 'redux';
 
 export const rootReducer = combineReducers({
@@ -19,5 +20,6 @@ export const rootReducer = combineReducers({
     Publish,
     Message,
     Details,
-    UpComments
+    UpComments,
+    Replies
 });

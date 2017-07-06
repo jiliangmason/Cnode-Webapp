@@ -1,9 +1,10 @@
 import React from 'react';
-import {Card, WhiteSpace, Icon, Toast} from 'antd-mobile';
+import {Card, WhiteSpace, Icon, Toast, List, Button, Flex, TextareaItem} from 'antd-mobile';
 import GetTime from '../../utils/GetTime';
+import { createForm } from 'rc-form';
 import './style.less';
 
-export default class Comments extends React.Component {
+class Comments extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.upComments = [];
@@ -52,12 +53,28 @@ export default class Comments extends React.Component {
         return has;
     }
 
+    selfReplyHandler() {
+        const {Login, details, replyCommentsFn} = this.props;
+        const Form = this.props.form;
+        let content = Form.getFieldValue('user_reply');
+        //console.log('content-pro', content, Login.accesstoken, details.id)
+        replyCommentsFn(Login.accesstoken, content, details.id);
+        Form.setFieldsValue({
+            user_reply: ''
+        });
+    }
+
+    loginHandler() {
+
+    }
+
     render() {
         const {details, Login} = this.props;
+        const {getFieldDecorator} = this.props.form;
         this.findUpComments(details, Login);
-        console.log('hehe', this.upComments);
         return (
-            <div>
+            <div className="details-article-comments">
+                <h3>共{details.reply_count}条评论</h3>
                 {
                     details.replies.map((item, index)=> {
                         return (
@@ -79,8 +96,27 @@ export default class Comments extends React.Component {
                         )
                     })
                 }
+                {
+                    Login.success ? <List renderHeader={() => '添加回复'}>
+                        {(getFieldDecorator('user_reply'))(<TextareaItem
+                            rows={5}
+                            count={200}
+                            clear
+                        />)}
+                        <Button type="primary" className="reply-btn" onClick={this.selfReplyHandler.bind(this)}>回复</Button>
+                    </List>
+                        :<List>
+                            <Flex justify="center">
+                            <div style={{margin: '0.5rem 0'}}>
+                                <p style={{color: '#000', fontSize: '0.35rem'}}>请先<span onClick={this.loginHandler.bind(this)} style={{color: '#108ee9'}}>登陆</span>之后再进行操作</p>
+                            </div>
+                            </Flex>
+                        </List>
+                }
             </div>
         )
     }
 
 }
+
+export default Comments = createForm({})(Comments)

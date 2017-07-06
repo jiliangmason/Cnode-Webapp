@@ -3,7 +3,7 @@ import TopicHeader from '../../components/Topic/Header/topic_header';
 import TopicList from '../../components/Topic/List/topic_list';
 import {connect} from 'react-redux';
 import * as ActionList from '../../actions/actions';
-import {Tabs, WhiteSpace, ActivityIndicator} from 'antd-mobile';
+import {Tabs, WhiteSpace, ActivityIndicator, Flex} from 'antd-mobile';
 import './style.less'
 
 const TabPane = Tabs.TabPane;
@@ -93,7 +93,9 @@ class Topic extends React.Component {
                                 <TabPane key={item.key} tab={item.name}>
                                     {(item.tab === this.props.Topic.selectedTab && this.state.data.length != 0)
                                         ? <TopicList data={this.state.data} isFetching={this.state.isFetching} loadingMore={this.loadingMore.bind(this)}/>
-                                        : <div className="topic-page-activity-indicator"><ActivityIndicator size="large" text="正在加载中"/></div>}
+                                        : <Flex justify="center" style={{marginTop: '0.2rem', paddingBottom: '1rem'}}>
+                                            <ActivityIndicator size="large" />
+                                          </Flex>}
                                 </TabPane>
                             )
                         })}

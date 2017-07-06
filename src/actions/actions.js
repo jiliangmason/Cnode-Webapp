@@ -368,27 +368,75 @@ export function upComments(accesstoken, replyId) {
             .then(json=>{
                 console.log('upcomments-data:', json);
                 if (json.success) {
-                    dispatch(successUpComments(json.action));
+                    dispatch(successUpComments(json.action, json.success));
                 }
                 else {
-                    dispatch(failUpComments(json.error_msg));
+                    dispatch(failUpComments(json.error_msg, json.success));
                 }
             })
     }
 }
 
-export function successUpComments(action_type) {
+export function successUpComments(action_type, success) {
     return {
         type: ActionType.SUCCESS_UPCOMMENTS,
+        success,
         todo: action_type
     }
 }
 
-export function failUpComments(error_msg) {
+export function failUpComments(error_msg, success) {
     return {
         type: ActionType.ERROR_UPCOMMENTS,
+        success,
         error_msg
     }
 }
+
+
+/********************************replies***********************************/
+
+export function postUserReplies(accesstoken, content, topicId, replyId) {
+    return (dispatch)=>{
+        let url = `https://cnodejs.org/api/v1/topic/${topicId}/replies`;
+        let paramsBody = replyId ? `accesstoken=${accesstoken}&content=${content}&reply_id=${replyId}`
+            : `accesstoken=${accesstoken}&content=${content}`;
+        let postPublishOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: paramsBody
+        };
+        fetch(url, postPublishOptions)
+            .then(res=>res.json())
+            .then(json=>{
+                console.log('replies-data:', json);
+                if (json.success) {
+                    dispatch(successReplies(json.reply_id, json.success));
+                }
+                else {
+                    dispatch(failReplies(json.error_msg, json.success));
+                }
+            })
+    }
+}
+
+export function successReplies(replyid, success) {
+    return {
+        type: ActionType.SUCCESS_REPLIES,
+        replyid,
+        success
+    }
+}
+
+export function failReplies(error_msg, success) {
+    return {
+        type: ActionType.ERROR_REPLIES,
+        error_msg,
+        success
+    }
+}
+
 
 

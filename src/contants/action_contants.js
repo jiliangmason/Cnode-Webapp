@@ -32,3 +32,5 @@ export const UPDATE_DETAILS = 'UPDATE_DETAILS'; //更新详情页的is_collect�
 
 export const SUCCESS_UPCOMMENTS = 'SUCCESS_UPCOMMENTS'; //成功点赞或取消赞
 export const ERROR_UPCOMMENTS = 'ERROR_UPCOMMENTS'; //点赞失败
+export const SUCCESS_REPLIES = 'SUCCESS_REPLIES'; //成功发表评论
+export const ERROR_REPLIES = 'ERROR_REPLIES'; //评论失败

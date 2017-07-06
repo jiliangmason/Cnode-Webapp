@@ -80,7 +80,7 @@ export default class UserInfo extends React.Component {
                 </Tabs>
             </div>
         ) : (<Flex justify="center" style={{marginTop: '0.3rem'}}>
-            <ActivityIndicator size="lg"/>
+            <ActivityIndicator size="large"/>
         </Flex>)
 
     }

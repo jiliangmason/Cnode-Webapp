@@ -34,7 +34,7 @@ class Details extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {params, Collect, Details, Login, UpComments, dispatch} = nextProps;
+        const {params, Collect, Details, Login, UpComments, Replies, dispatch} = nextProps;
         const id = params.id;
         let exist = false;
 
@@ -51,16 +51,27 @@ class Details extends React.Component {
             })
         }
 
-        //点赞动作
+        //点赞动作成功刷新detail页面
         if ((this.props.UpComments.todo != UpComments.todo) && UpComments.todo) {
             dispatch(ActionList.fetchArticleDetails(id));
+        }
+
+        //回复成功时更新detail页面
+        if (this.props.Replies != Replies) {
+            if (Replies.success) {
+                dispatch(ActionList.fetchArticleDetails(id));
+                //更新一下用户信息
+                dispatch(ActionList.fetchUserInfo(Login.loginname));
+            }
         }
     }
 
     leftClickHandler() {
         const {dispatch} = this.props;
         dispatch(ActionList.topicSelect('good')); //解决返回首页无数据加载的bug
-        hashHistory.replace("/");
+        setTimeout(()=>{
+            hashHistory.replace("/");
+        }, 50);
     }
 
     collectTopic(accesstoken, loginname, topicId, isCollect) {
@@ -85,9 +96,17 @@ class Details extends React.Component {
      * 点赞
      * */
     upCommentsFn(accesstoken, replyId) {
-        const {dispatch, params} = this.props;
+        const {dispatch} = this.props;
         //取消或点赞
         dispatch(ActionList.upComments(accesstoken, replyId));
+    }
+
+    /*
+    * 回复评论
+    * */
+    replyCommentsFn(accesstoken, content, topicId, replyId='') {
+        const {dispatch} = this.props;
+        dispatch(ActionList.postUserReplies(accesstoken, content, topicId, replyId))
     }
 
     render() {
@@ -102,9 +121,9 @@ class Details extends React.Component {
                                             initCollect={this.state.initCollect}
                                             collectTopicFn={this.collectTopic.bind(this)}
                                             updateDetailsFn={this.updateDetails.bind(this)}/>
-                    <Comments details={Details.details} Login={Login} upCommentsFn={this.upCommentsFn.bind(this)}/></div>)
+                    <Comments details={Details.details} Login={Login} upCommentsFn={this.upCommentsFn.bind(this)} replyCommentsFn={this.replyCommentsFn.bind(this)}/></div>)
                     :
-                    <div className="details-loading-indicator"><ActivityIndicator size="large" text="正在加载中..."/></div>}
+                    <div className="details-loading-indicator"><ActivityIndicator size="large" /></div>}
             </div>
         )
     }
@@ -116,7 +135,8 @@ function mapStateToProps(state) {
         Details: state.Details,
         Collect: state.Collect,
         Login: state.Login,
-        UpComments: state.UpComments
+        UpComments: state.UpComments,
+        Replies: state.Replies
     }
 }
 

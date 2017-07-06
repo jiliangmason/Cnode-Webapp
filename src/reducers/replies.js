@@ -1,22 +1,25 @@
 /**
+ * Created by Administrator on 2017/7/6 0006.
+ */
+/**
  * Created by Administrator on 2017/7/5 0005.
  */
 import * as ActionType from '../contants/action_contants';
 const initialState = {
-    todo: '',
-    success: false
+    success: false,
+    replyid: ''
 };
 
-export function UpComments(state=initialState, action) {
+export function Replies(state=initialState, action) {
     switch (action.type) {
-        case ActionType.SUCCESS_UPCOMMENTS:
+        case ActionType.SUCCESS_REPLIES:
             return {
                 ...state,
                 success: action.success,
-                todo: action.todo
+                replyid: action.replyid
             };
 
-        case ActionType.ERROR_UPCOMMENTS:
+        case ActionType.ERROR_REPLIES:
             return {
                 ...state,
                 success: action.success,
