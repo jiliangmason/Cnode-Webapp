@@ -34,7 +34,7 @@ export default class TopicList extends React.Component {
         let {data} = this.props;
         const menuListItem = {
             height: document.documentElement.clientHeight - 276,  //可视区的高度
-            overflow: 'auto',
+            overflow: 'auto'
         };
 
         return (

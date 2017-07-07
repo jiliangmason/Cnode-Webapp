@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Drawer, NavBar, List, Button, WingBlank, Flex} from 'antd-mobile';
+import {Link} from 'react-router';
 import './style.less';
 const Item = List.Item;
 
@@ -53,21 +54,27 @@ export default class TopicHeader extends React.Component {
                 <Item arrow={this.state.publish ? "up" : "down"} multipleLine
                       onClick={this.showSelectItem.bind(this, 'publish')}>发布的话题</Item>
                 {this.state.publish ? this.props.UserInfo.userinfo.recent_topics.map((item, index)=>{
-                    return (<Item key={index} className="user-publish-title">{item.title}</Item>)
+                    return (<Link to={`details/${item.id}`} key={index}>
+                                <Item className="user-publish-title" >{item.title}</Item>
+                            </Link>)
                 }) : ''}
             </List>
             <List key="2">
                 <Item arrow={this.state.reply ? "up" : "down"} multipleLine
                       onClick={this.showSelectItem.bind(this, 'reply')}>参与的话题</Item>
                 {this.state.reply ? this.props.UserInfo.userinfo.recent_replies.map((item, index)=>{
-                    return (<Item key={index} className="user-publish-title">{item.title}</Item>)
+                    return (<Link to={`details/${item.id}`} key={index}>
+                                <Item className="user-publish-title">{item.title}</Item>
+                            </Link>)
                 }) : ''}
             </List>
             <List key="3">
                 <Item arrow={this.state.collect ? "up" : "down"} multipleLine
                       onClick={this.showSelectItem.bind(this, 'collect')}>收藏的话题</Item>
                 {this.state.collect ? this.props.Collect.collect.map((item, index)=>{
-                    return (<Item key={index} className="user-publish-title">{item.title}</Item>)
+                    return (<Link to={`details/${item.id}`} key={index}>
+                                <Item key={index} className="user-publish-title">{item.title}</Item>
+                            </Link>)
                 }) : ''}
             </List>
         </div>)

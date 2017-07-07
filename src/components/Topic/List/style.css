@@ -8,15 +8,18 @@
   margin-right: 15px;
   font-weight: bold;
 }
+.my-list {
+  width: 100%;
+}
 .my-list .am-list-thumb img {
   width: 100px;
   height: 100px;
+  border-radius: 50%;
 }
 .my-list .loading-more-data {
   display: flex;
   justify-content: space-around;
 }
-/*
-.am-tab-bar-content .am-tab-bar-tabpane{
+/*.am-tab-bar-content .am-tab-bar-tabpane{
   overflow:hidden;
 }*/

@@ -34,7 +34,7 @@ class Details extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {params, Collect, Details, Login, UpComments, Replies, dispatch} = nextProps;
+        const {params, Collect, Mark, Login, UpComments, Replies, dispatch} = nextProps;
         const id = params.id;
         let exist = false;
 
@@ -63,6 +63,11 @@ class Details extends React.Component {
                 //更新一下用户信息
                 dispatch(ActionList.fetchUserInfo(Login.loginname));
             }
+        }
+
+        //标记未读消息为已读更新message
+        if (this.props.Mark.msgId != Mark.msgId && Login.accesstoken) {
+            dispatch(ActionList.fetchUserMessage(Login.accesstoken));
         }
     }
 
@@ -137,7 +142,8 @@ function mapStateToProps(state) {
         Collect: state.Collect,
         Login: state.Login,
         UpComments: state.UpComments,
-        Replies: state.Replies
+        Replies: state.Replies,
+        Mark: state.Mark
     }
 }
 

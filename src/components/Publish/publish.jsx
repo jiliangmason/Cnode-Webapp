@@ -46,7 +46,7 @@ class Publish extends React.Component {
         let title = getFieldProps('title').value;
         let content = getFieldProps('content').value;
         let select = getFieldProps('select').value;
-        //console.log(title, content, select);
+        console.log(title, content, select);
 
         if (!select) {
             this.setState({
@@ -72,6 +72,8 @@ class Publish extends React.Component {
             return;
         }
 
+        this.resetForm();
+
         //1.请求发帖子
         //2.重新获取userinfo的信息, 保证切入到'我的'页面可以看到新的发帖信息
         if (login.accesstoken) {
@@ -89,7 +91,7 @@ class Publish extends React.Component {
     showAlert(PublishTopic, successPublish) {
         let alertInstance = alert('发布主题', '正在发布中...', []);
         setTimeout(() => {
-            // 可以调用close方法以在外部close
+            alertInstance.close();
             if (PublishTopic.hasOwnProperty('failmessage')) {
                 Toast.info('发布失败,请重试!', 1);
             }
@@ -97,13 +99,17 @@ class Publish extends React.Component {
                 Toast.info('发布成功~', 1);
                 successPublish(); //跳转到'我的'页面
             }
-            alertInstance.close();
 
         }, 2000);
     }
 
-    reSetForm() {
-
+    resetForm() {
+        const Form = this.props.form;
+        Form.setFieldsValue({
+            select: '',
+            title: '',
+            content: ''
+        })
     }
 
     onClose(key) {
@@ -118,13 +124,12 @@ class Publish extends React.Component {
         let {err} = this.props;
         return (
             <div>
-                <Picker data={source} cols={1} {...getFieldProps('select')} className="forss">
+                <Picker data={source} cols={1} className="forss" {...getFieldProps('select')}>
                     <List.Item arrow="horizontal">请选择发表类型</List.Item>
                 </Picker>
                 <List>
-                    <TextareaItem {...getFieldProps('title')} placeholder="输入标题" title="标题" data-seed="logId"
-                                  autoHeight/>
-                    <TextareaItem   {...getFieldProps('content')} title="内容" placeholder="内容字数10字以上" autoHeight/>
+                    <TextareaItem {...getFieldProps('title')} placeholder="输入标题" title="标题" data-seed="logId" autoHeight/>
+                    <TextareaItem {...getFieldProps('content')} title="内容" placeholder="内容字数10字以上" autoHeight/>
                     <WhiteSpace size="lg"/>
                     <WingBlank>
                         <Button onClick={this.pubHandler.bind(this)} className="user-publish-button">发布</Button>

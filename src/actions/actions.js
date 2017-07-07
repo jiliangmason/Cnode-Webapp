@@ -298,6 +298,46 @@ export function failUserMessage(error_msg) {
     }
 }
 
+export function postMarkMessage(accesstoken, msgId) {
+    return (dispatch) => {
+        let url = `https://cnodejs.org/api/v1/message/mark_one/${msgId}`;
+        let postPublishOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `accesstoken=${accesstoken}`
+        };
+        fetch(url, postPublishOptions)
+            .then(res=>res.json())
+            .then(json=>{
+                console.log('markmessage-data:', json);
+                if (json.success) {
+                    dispatch(successMarkMessage(json.marked_msg_id, json.success));
+                }
+                else {
+                    dispatch(failMarkMessage(json.error_msg, json.success));
+                }
+            })
+    }
+}
+
+export function successMarkMessage(msgId, success) {
+    return {
+        type: ActionType.SUCCESS_MARK_MESSAGE,
+        msgId,
+        success
+    }
+}
+
+export function failMarkMessage(error_msg, success) {
+    return {
+        type: ActionType.ERROR_MARK_MESSAGE,
+        error_msg,
+        success
+    }
+}
+
 /********************************details***********************************/
 
 export function fetchArticleDetails(id) {

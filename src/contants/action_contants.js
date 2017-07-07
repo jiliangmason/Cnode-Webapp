@@ -34,3 +34,6 @@ export const SUCCESS_UPCOMMENTS = 'SUCCESS_UPCOMMENTS'; //成功点赞或取消�
 export const ERROR_UPCOMMENTS = 'ERROR_UPCOMMENTS'; //点赞失败
 export const SUCCESS_REPLIES = 'SUCCESS_REPLIES'; //成功发表评论
 export const ERROR_REPLIES = 'ERROR_REPLIES'; //评论失败
+
+export const SUCCESS_MARK_MESSAGE = 'SUCCESS_MARK_MESSAGE'; //成功标记为已读
+export const ERROR_MARK_MESSAGE = 'ERROR_MARK_MESSAGE'; //失败标记
