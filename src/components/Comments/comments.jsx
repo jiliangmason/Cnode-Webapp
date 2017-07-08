@@ -2,7 +2,7 @@ import React from 'react';
 import {Card, WhiteSpace, Icon, Toast, List, Button, Flex, TextareaItem} from 'antd-mobile';
 import GetTime from '../../utils/GetTime';
 import HashMap from '../../utils/HashMapUtils';
-import {hashHistory} from 'react-router';
+import {Link} from 'react-router';
 import {createForm} from 'rc-form';
 import './style.less';
 
@@ -113,7 +113,7 @@ class Comments extends React.Component {
                         return (
                             <div key={index}>
                                 <Card>
-                                    <Card.Header title={item.author.loginname} thumb={item.author.avatar_url}
+                                    <Card.Header title={<Link to={`otherinfo/${item.author.loginname}`}><span>{item.author.loginname}</span></Link>} thumb={item.author.avatar_url}
                                                  extra={<span style={{float: 'right'}}>{index + 1}楼</span>}/>
                                     <Card.Body>
                                         <div dangerouslySetInnerHTML={{__html: item.content}}></div>

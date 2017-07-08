@@ -114,7 +114,9 @@ class Login extends React.Component {
         const {Collect, Login} = this.props;
         return (
             <div className="user-login-form-rc">
-                <NavBar rightContent={Login.success?[<Icon key={0} onClick={this.showModal.bind(this, 'modal')} type={require('../../images/logout.svg')}/>]:''}>个人中心</NavBar>
+                <div style={{position: 'fixed', top: 0, width: '100%', zIndex: '999'}}>
+                    <NavBar rightContent={Login.success?[<Icon key={0} onClick={this.showModal.bind(this, 'modal')} type={require('../../images/logout.svg')}/>]:''}>个人中心</NavBar>
+                </div>
                 {Login.success ? <UserInfo userinfo={this.props.UserInfo.userinfo} collect={Collect.collect}/> : <UserLogin login={this.login.bind(this)}/>}
                 <Modal
                     title="退出登陆"

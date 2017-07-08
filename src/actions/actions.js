@@ -478,5 +478,71 @@ export function failReplies(error_msg, success) {
     }
 }
 
+/********************************otherUserInfo***********************************/
+export function fetchOtherUserInfo(loginname) {
+    return (dispatch, getState)=>{
+        let state = getState();  //state是全局的状态树
+        const fetchOptions = {
+            method: 'GET'
+        };
+
+        fetch(`https://cnodejs.org/api/v1/user/${loginname}`, fetchOptions)
+            .then(res=>res.json())
+            .then(json=>{
+                console.log('other-user-info:', json);
+                if (json.success) {
+                    dispatch(receiveOtherUserInfo(loginname, json.data))
+                }
+                else {
+                    dispatch(failOtherUserInfo(json.error_msg))
+                }
+            })
+    }
+}
+
+export function fetchOtherUserCollection(loginname) {
+    return (dispatch, getState)=>{
+        let state = getState();
+        const fetchOptions = {
+            method: 'GET'
+        };
+
+        fetch(`https://cnodejs.org/api/v1/topic_collect/${loginname}`, fetchOptions)
+            .then(res=>res.json())
+            .then(json=>{
+                console.log('other-collect-data', json);
+                if (json.success) {
+                    dispatch(receiveOtherUserCollection(loginname, json.data));
+                }
+                else {
+                    dispatch(failOtherUserInfo(json.error_msg));
+                }
+
+            })
+    }
+}
+
+export function receiveOtherUserInfo(loginname, info) {
+    return {
+        type: ActionType.RECEIVE_OTHER_INFO,
+        loginname,
+        info
+    }
+}
+
+export function receiveOtherUserCollection(loginname, collect) {
+    return {
+        type: ActionType.RECEIVE_OTHER_COLLECT,
+        loginname,
+        collect
+    }
+}
+
+export function failOtherUserInfo(error_msg) {
+    return {
+        type: ActionType.ERROR_OTHER_INFO,
+        error_msg
+    }
+}
 
 

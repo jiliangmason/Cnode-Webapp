@@ -11,6 +11,9 @@
   float: right;
   font-size: 0.34rem;
 }
+.details-article-item {
+  margin-top: 0.99rem;
+}
 .details-article-item .am-card-footer-content {
   font-size: 0.3rem!important;
 }

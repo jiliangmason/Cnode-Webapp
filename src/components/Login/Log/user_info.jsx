@@ -16,7 +16,7 @@ export default class UserInfo extends React.Component {
     }
 
     callback() {
-
+        //test points
     }
 
     componentWillReceiveProps(nextProps) {
@@ -27,7 +27,7 @@ export default class UserInfo extends React.Component {
         let {userinfo, collect} = this.props; //userinfo可能为空对象, collect可能为空数组
 
         return (JSON.stringify(userinfo) != '{}' && collect.length > 0) ? (
-            <div>
+            <div style={{marginTop: '0.9rem'}}>
                 <Card>
                     <Card.Header title={userinfo.githubUsername} thumb={userinfo.avatar_url}
                                  extra={<span>积分&nbsp;{userinfo.score}</span>}/>

@@ -6,9 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --hot --inline --devtool eval  --port 8088 --content-base dist --colors",
     "clean": "rimraf dist",
-    "dev": "echo \"Complied in dev mode!\" && npm run clean && webpack -p --progress --colors && npm run start:dev"
+    "dev": "echo \"Complied in dev mode!\" && npm run clean && webpack -p --progress --colors"
   },
-  "author": "zhang",
+  "author": "zhangyaxiong",
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^6.7.7",

@@ -37,3 +37,7 @@ export const ERROR_REPLIES = 'ERROR_REPLIES'; //评论失败
 
 export const SUCCESS_MARK_MESSAGE = 'SUCCESS_MARK_MESSAGE'; //成功标记为已读
 export const ERROR_MARK_MESSAGE = 'ERROR_MARK_MESSAGE'; //失败标记
+
+export const RECEIVE_OTHER_INFO = 'RECEIVE_OTHER_INFO';  //接收他人的信息
+export const RECEIVE_OTHER_COLLECT = 'RECEIVE_OTHER_COLLECT'; //接收他人的收藏
+export const ERROR_OTHER_INFO = 'ERROR_OTHER_INFO'; //获取他人信息失败

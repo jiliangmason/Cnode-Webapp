@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card, Button, Modal} from 'antd-mobile';
-import {hashHistory} from 'react-router';
+import {Link} from 'react-router';
 import GetTime from '../../utils/GetTime';
 import './style.less'
 
@@ -58,7 +58,7 @@ export default class ArticleDetails extends React.Component {
         return (
             <div className="details-article-item">
                 <Card>
-                    <Card.Header title={`作者: ${details.author.loginname}`}
+                    <Card.Header title={<span>作者: <Link to={`otherinfo/${details.author.loginname}`}>{details.author.loginname}</Link></span>}
                                  extra={<span>发布于{GetTime.calculateTime(new Date(), details.create_at)}</span>}/>
                     <Card.Body>
                         <div className="details-title">{details.title}</div>
